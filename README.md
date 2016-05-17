@@ -25,7 +25,7 @@ __v: 0,
 updated_at: "2016-05-17T21:41:03.188Z",
 url: "https://www.youtube.com/watch?v=ru0K8uYEZWw",
 image: "https://i.ytimg.com/vi/ru0K8uYEZWw/maxresdefault.jpg",
-desc: "CANT STOP THE FEELING!” from the Original Motion Picture Trolls Official Music Video directed by Mark Romanek. Get it on iTunes: http://smarturl.it/CSTFi...",
+desc: "CANT STOP THE FEELING! from the Original Motion Picture Trolls Official Music Video directed by Mark Romanek. Get it on iTunes: http://smarturl.it/CSTFi...",
 title: "CANT STOP THE FEELING! (From DreamWorks Animations Trolls) (Official Video) - YouTube",
 _id: "573b8fef5097313817ae1e0a",
 created_at: "2016-05-17T21:41:03.182Z"
