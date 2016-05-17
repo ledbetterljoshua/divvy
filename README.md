@@ -1,6 +1,6 @@
 # divvy
 
-Divvy is an app that has three main purposes: 
+###### Divvy is an app that has three main purposes: 
 ---
 
 1. Private saving of content on the web. If you wanted a place to save all the embarrassing songs on youtube that you love, you can  create a private group, and then save anything you want to it. This can be done using Pocket, or the new Spaces app by Google, but I would like for this to be a large part of the app, built in. 
@@ -12,9 +12,10 @@ Divvy is an app that has three main purposes:
 ###API
 I am currently in the process of building out the API. Here are the end points so far: 
 
-This get request will check if the URL passed to "u" is in the database. If it is, it will return data for that URL. If not, the site will be crawled, and then the data for the site will be returned in JSON format:
-```javascript
-/api/url/?u={{url}}
+###### URL API
+This GET request will check if the URL passed to "u" is in the database. If it is, it will return data for that URL. If not, the site will be crawled, and then the data for the site will be returned in JSON format:
+```JSON
+/api/url/?u=:url
 ```
 Example:
 ```JSON
@@ -31,5 +32,44 @@ _id: "573b8fef5097313817ae1e0a",
 created_at: "2016-05-17T21:41:03.182Z"
 }
 ```
+###### Posts API
+___
+This GET request will return 20 of the moat popular posts:
+```JSON
+/api/posts/trending
+```
+This is not user specific. Each post has an attribute called popularity, which is a number. The number grows each time the post if viewed, and each time time someone comments on that post.  
 
+___
+This GET request will return return all posts within a specific group:
+```JSON
+/api/groups/:group/posts
+```
+___
+This GET request will return return all posts for the currently logged in user. If you are not logged in when making hitting this end point you will get an error:
+```JSON
+/api/posts
+```
+___
+This GET request will return return information on a specific post, along with sending back the most 20 recent comments.
+```JSON
+/api/post/:id
+```
 
+___
+This POST request will return either update a current post, or create a new one, depending on whether you send an ID in the request body. If it creates a new post, the /api/url endpoint will be hit automatically, and add the data to the post.
+```JSON
+/api/posts/
+```
+___
+This DELETE request will delete a single post. Simply pass the ID of the post you want to delete to the end of the URL.
+```JSON
+/api/post/:id
+```
+
+//**********TODO**********
+//allow user to save a post by favoriting 
+
+//allow user to save a post by clicking readlater
+___
+###### Groups API
