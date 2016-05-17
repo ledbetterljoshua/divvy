@@ -1,0 +1,34 @@
+<link rel="stylesheet" type="text/css" href="/assets/css/login.css">
+<style type="text/css">
+.groups.ng-scope {
+    padding: 0 50px;
+}
+p.ng-binding {
+    display: inline;
+    font-weight: 300;
+    color: #000;
+}
+</style>
+<div class="posts">
+	<div>title: <p><a href="{{post.url}}">{{post.siteTitle}}</a></p></div>
+	<div>description: <p>{{post.siteDesc}}</p></div>
+	<div>image <p>{{post.image}}</p></div>
+	<div>created_at: <p>{{post.created_at | date : medium}}</p></div>
+	<br>
+</div>
+<div class="comments" ng-repeat="comment in comments">
+	<div>user: <p>{{comment.user}}</a></p></div>
+	<div>_id: <p>{{comment._id}}</p></div>
+	<div>post_id: <p>{{comment.post_id}}</p></div>
+	<div>parent_id <p>{{comment.parent_id}}</p></div>
+	<div>body: <p>{{comment.body }}</p></div>
+	<div>created_at: <p>{{comment.created_at }}</p></div>
+	<br>
+</div>
+<div class="login-card">
+    <h1>new post</h1><br>
+  <form >
+    <input type="text" ng-model="newComment.body" name="text" placeholder="say something">
+    <button ng-click="addComment(post._id)" name="login" class="login login-submit" value="add comment">add comment</button>
+  </form>
+</div>

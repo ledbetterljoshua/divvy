@@ -1,0 +1,41 @@
+<link rel="stylesheet" type="text/css" href="/assets/css/login.css">
+<div class="login-card">
+    <h1>new group</h1><br>
+  <form >
+    <input type="text" ng-model="newGroup.title" name="title" placeholder="Name">
+    <input type="checkbox" name="private" ng-model="newGroup.private" value="private"> private<br>
+    <input ng-click="createGroup(newGroup)" name="login" class="login login-submit" value="create">
+  </form>
+</div>
+<style type="text/css">
+.groups.ng-scope {
+    padding: 0 50px;
+}
+p.ng-binding {
+    display: inline;
+    font-weight: 300;
+    color: #000;
+}
+</style>
+<div class="groups" ng-repeat="group in groups.addedTo">
+	<div><a href="/#/group/{{group._id}}">title:</a> <p>{{group.title}}</p></div>
+	<div>user: <p>{{group.user}}</p></div>
+	<div>number of users: <p>{{group.users.length}}</p></div>
+	<div>popularity: <p>{{group.popularity}}</p></div>
+	<div>slug: <p>{{group.slug}}</p></div>
+	<div>private: <p>{{group.private}}</p></div>
+	<div>created_at: <p>{{group.created_at}}</p></div>
+	<br>
+
+</div>
+<br>
+<div class="groups" ng-repeat="group in groups.created">
+	<div><a href="/#/group/{{group._id}}">title:</a> <p>{{group.title}}</p></div>
+	<div>user: <p>{{group.user}}</p></div>
+	<div>number of users: <p>{{group.users.length}}</p></div>
+	<div>popularity: <p>{{group.popularity}}</p></div>
+	<div>slug: <p>{{group.slug}}</p></div>
+	<div>private: <p>{{group.private}}</p></div>
+	<div>created_at: <p>{{group.created_at}}</p></div>
+	<br>
+</div>
