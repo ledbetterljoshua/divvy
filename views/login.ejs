@@ -5,9 +5,12 @@
 </head>
 <body>
 	<div class="login-card">
+		<% if (message.length > 0) { %>
+        <div class="alert alert-danger"><%= message %></div>
+        <% } %>
 	    <h1>Login</h1><br>
 	  <form action="/login" method="post">
-	    <input type="text" name="email" placeholder="Email">
+	    <input type="text" name="username" placeholder="username">
 	    <input type="password" name="password" placeholder="Password">
 	    <input type="submit" name="login" class="login login-submit" value="login">
 	  </form>
@@ -19,11 +22,11 @@
 
 	<script   src="https://code.jquery.com/jquery-2.2.3.min.js"   integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="   crossorigin="anonymous"></script>
 	<script type="text/javascript">
-	$(function(){
-		$('input[name="email"]').val("jled5917@gmail.com");
-		$('input[name="password"]').val("Jled591711811");
-		$('input[type="submit"]').click();
-	});
+	// $(function(){
+	// 	$('input[name="email"]').val("ledbetterljoshua@gmail.com");
+	// 	$('input[name="password"]').val("Jled591711811");
+	// 	$('input[type="submit"]').click();
+	// });
 	</script>
 </body>
 </html>

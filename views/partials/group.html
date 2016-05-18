@@ -11,6 +11,7 @@ p.ng-binding {
 </style>
 <div class="groups">
 	<div>title: <p>{{group.title}}</p></div>
+	<div>group: <p>{{group._id}}</p></div>
 	<div>user: <p>{{group.user}}</p></div>
 	<div>number of users: <p>{{group.users.length}}</p></div>
 	<div>popularity: <p>{{group.popularity}}</p></div>
@@ -24,16 +25,18 @@ p.ng-binding {
     <h1>new post</h1><br>
   <form >
     <input type="text" ng-model="newPost.url" name="url" placeholder="url">
-    <input ng-click="createPost(newPost, group._id)" name="login" class="login login-submit" value="create">
+    <button ng-click="createPost(newPost, group._id)" name="login" class="login login-submit" value="create">create</button>
   </form>
 </div>
 <div class="posts" ng-repeat="post in posts">
-	<div>title: <p><a href="{{post.url}}">{{post.siteTitle}}</a></p></div>
+	<div>title: <p style="display:inline;"><a href="{{post.url}}">{{post.siteTitle}}</a></p></div>
+	<div>id: <p>{{post._id}}</p></div>
+	<div>private: <p>{{post.private}}</p></div>
 	<div>popularity: <p>{{post.popularity}}</p></div>
 	<div>comments: <p>{{post.comments}}</p></div>
 	<div>description: <p>{{post.siteDesc}}</p></div>
 	<div>image <p>{{post.image}}</p></div>
 	<div>created_at: <p>{{post.created_at | date : medium}}</p></div>
 	<a href="/#/p/{{post._id}}">add a comment</a>
-	<br>
+	<br /> <br />
 </div>

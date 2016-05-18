@@ -8,7 +8,7 @@ module.exports = function(app, router, bodyParser, request, cheerio) {
   router.get('/url/', function(req, res) {
     console.log(req.query.u)
     URl.find({url: req.query.u}, function(err, url){
-      console.log(url)
+      console.log(url) 
       if (url.length === 0) {
         //crawl webpage, 
         request(req.query.u, function(error, response, html){
@@ -17,11 +17,11 @@ module.exports = function(app, router, bodyParser, request, cheerio) {
                 // Next, we'll utilize the cheerio library on the returned html which will essentially give us jQuery functionality
                 var $ = cheerio.load(html);
                 // Finally, we'll define the variables we're going to capture
-                var title, image, desc;
-                var item = { title : "", image : "", desc : ""};
+                var siteTitle, image, siteDesc;
+                var item = { siteTitle : "", image : "", siteDesc : ""};
 
-                item.title = $('title').text();
-                item.desc = $('meta[name="description"]').attr('content');
+                item.siteTitle = $('title').text();
+                item.siteDesc = $('meta[name="description"]').attr('content');
 
                 var image1 = $('meta[property="og:image"]').attr('content');
                 var image2 = $('meta[itemprop="image"]').attr('content');
@@ -45,8 +45,8 @@ module.exports = function(app, router, bodyParser, request, cheerio) {
                 var newUrl = URl({
                     url: req.query.u, 
                     image: item.image, 
-                    desc: item.desc,
-                    title: item.title
+                    siteDesc: item.siteDesc,
+                    siteTitle: item.siteTitle
                  });
                  newUrl.save(function(err) {
                      if (err) {res.send(err)};

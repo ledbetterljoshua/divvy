@@ -13,7 +13,7 @@
 I am currently in the process of building out the API. Here are the end points so far: 
 
 ###### URL API
-This GET request will check if the URL passed to "u" is in the database. If it is, it will return data for that URL. If not, the site will be crawled, and then the data for the site will be returned in JSON format:
+This GET request will check if the URL passed to "u" query is in the database. If it is, it will return data for that URL. If not, the site will be crawled, and then the data for the site will be returned in JSON format. Thia sould be used for previewing of a new post.
 ```JSON
 /api/url/?u=:url
 ```
@@ -32,6 +32,8 @@ _id: "573b8fef5097313817ae1e0a",
 created_at: "2016-05-17T21:41:03.182Z"
 }
 ```
+TODO: get more info from webcrawl. IE: the type of webpage, and assign the page to a specific category
+
 ###### Posts API
 ___
 This GET request will return 20 of the moat popular posts:
@@ -51,13 +53,13 @@ This GET request will return return all posts for the currently logged in user. 
 /api/posts
 ```
 ___
-This GET request will return return information on a specific post, along with sending back the most 20 recent comments.
+This GET request will return return information on a specific post, along with sending back the most 20 recent comments for the post.
 ```JSON
 /api/post/:id
 ```
 
 ___
-This POST request will return either update a current post, or create a new one, depending on whether you send an ID in the request body. If it creates a new post, the /api/url endpoint will be hit automatically, and add the data to the post.
+This POST request will either update a current post, or create a new one, depending on whether or not you send an ID in the request body. If it creates a new post, the /api/url endpoint will be hit automatically, and add the data to the post.
 ```JSON
 /api/posts/
 ```
@@ -67,9 +69,9 @@ This DELETE request will delete a single post. Simply pass the ID of the post yo
 /api/post/:id
 ```
 
-//**********TODO**********
-//allow user to save a post by favoriting 
+**TODO**
+allow user to save a post by favoriting 
 
-//allow user to save a post by clicking readlater
+allow user to save a post by clicking readlater
 ___
 ###### Groups API

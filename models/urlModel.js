@@ -5,8 +5,8 @@ var Schema = mongoose.Schema;
 var urlSchema = new Schema({
 	url: String,
 	image: String, 
-	desc: String,
-	title: String,
+	siteDesc: String,
+	siteTitle: String,
 	created_at: { type: Date, default: Date.now },
   updated_at: Date
 });

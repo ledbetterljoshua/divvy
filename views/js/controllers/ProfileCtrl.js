@@ -1,5 +1,4 @@
-// public/js/controllers/MainCtrl.js
-angular.module('MainCtrl', []).controller('MainController', function($scope, $location, $rootScope, $timeout, $log, $http) {
+angular.module('ProfileCtrl', []).controller('ProfileController', function($scope, $location, $rootScope, $timeout, $log, $http) {
 
 	$scope.joshua = "Joshua";
 

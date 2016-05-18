@@ -1,5 +1,4 @@
-// public/js/controllers/MainCtrl.js
-angular.module('MainCtrl', []).controller('MainController', function($scope, $location, $rootScope, $timeout, $log, $http) {
+angular.module('SearchCtrl', []).controller('SearchController', function($scope, $location, $rootScope, $timeout, $log, $http) {
 
 	$scope.joshua = "Joshua";
 
@@ -23,5 +22,5 @@ angular.module('MainCtrl', []).controller('MainController', function($scope, $lo
 			console.log(err);
 		});
 	}
-
+ 
 });

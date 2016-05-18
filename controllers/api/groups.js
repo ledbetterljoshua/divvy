@@ -5,7 +5,7 @@ module.exports = function(app, router, bodyParser) {
 
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
-
+ 
     //get trending groups
     router.get('/groups/trending', function(req, res){
       Groups.find( { 
@@ -115,10 +115,10 @@ module.exports = function(app, router, bodyParser) {
               private: req.body.private,
               created_at: req.body.created_at,
               updated_at: req.body.updated_at 
-            }, 
+            }, {new: true},
             function(err, post) {
                 if (err) {res.send(err)};
-                res.send('Success');
+                res.send(post);
             });
         }
         
@@ -135,7 +135,7 @@ module.exports = function(app, router, bodyParser) {
            });
            newGroup.save(function(err) {
                if (err) {res.send(err)};
-               res.send('Success');
+               res.send(newGroup);
            });
             
         }

@@ -19,6 +19,8 @@ var postSchema = new Schema({
   	updated_at: Date
 });
 
+postSchema.index({ siteTitle: 'text', siteDesc: 'text', url: 'text', body: 'text' });
+
 var Posts = mongoose.model('Posts', postSchema);
 
 //Before saving to the database, 

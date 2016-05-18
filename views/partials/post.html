@@ -8,6 +8,11 @@ p.ng-binding {
     font-weight: 300;
     color: #000;
 }
+.replies {
+    margin: 5px 30px;
+    border-left: 8px solid #D0D0D0;
+    padding: 5px 12px;
+}
 </style>
 <div class="posts">
 	<div>title: <p><a href="{{post.url}}">{{post.siteTitle}}</a></p></div>
@@ -16,17 +21,24 @@ p.ng-binding {
 	<div>created_at: <p>{{post.created_at | date : medium}}</p></div>
 	<br>
 </div>
-<div class="comments" ng-repeat="comment in comments">
+<div class="comments" ng-repeat="comment in comments track by $index">
 	<div>user: <p>{{comment.user}}</a></p></div>
 	<div>_id: <p>{{comment._id}}</p></div>
 	<div>post_id: <p>{{comment.post_id}}</p></div>
 	<div>parent_id <p>{{comment.parent_id}}</p></div>
 	<div>body: <p>{{comment.body }}</p></div>
 	<div>created_at: <p>{{comment.created_at }}</p></div>
+	<div class="replies" ng-repeat="reply in comment.replies">
+		<div>author: <p>{{reply.author}}</a></p></div>
+		<div>text: <p>{{reply.text}}</p></div>
+		<div>posted: <p>{{reply.posted}}</p></div>
+	</div>
+	<input type="text" ng-model="reply" name="text" placeholder="say something">
+	<button ng-click="addReply(comment._id, reply, $index)" name="login" class="login login-submit" value="add comment">add reply</button>
+  </form>
 	<br>
 </div>
 <div class="login-card">
-    <h1>new post</h1><br>
   <form >
     <input type="text" ng-model="newComment.body" name="text" placeholder="say something">
     <button ng-click="addComment(post._id)" name="login" class="login login-submit" value="add comment">add comment</button>

@@ -14,6 +14,8 @@ var groupSchema = new Schema({
     updated_at: Date, 
 });
 
+groupSchema.index({ title: 'text' });
+
 groupSchema.pre('save', function(next) {
   // get the current date
   var currentDate = new Date();

@@ -8,12 +8,25 @@ module.exports = function(app, router, bodyParser) {
     
     //get all comments on post
     
+    router.post('/comment/reply', isAuthenticated, function(req, res) {
+      if (req.body.id) {
+            Comments.findByIdAndUpdate(req.body.id, { 
+              $push: {"replies": {text: req.body.reply.text, author: req.user}}
+            }, {new: true},
+            function(err, post) {
+                if (err) {res.send(err)};
+                res.send(post.replies);
+            });
+        }
+    });
+
     router.post('/comment', isAuthenticated, function(req, res) {
 
         if (req.body.id) {
             Comments.findByIdAndUpdate(req.body.id, { 
             	body: req.body.body, 
-              updated_at: req.body.updated_at 
+              updated_at: req.body.updated_at, 
+              $push: {"replies": {text: req.body.reply.text, author: req.user}}
             }, 
             function(err, post) {
                 if (err) {res.send(err)};
@@ -26,7 +39,6 @@ module.exports = function(app, router, bodyParser) {
               user: req.user, 
               body: req.body.body, 
               post_id: req.body.post_id,
-              parent_id: req.body.parent_id,
               created_at: req.body.created_at,
               updated_at: req.body.updated_at
            });

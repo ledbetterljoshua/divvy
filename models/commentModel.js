@@ -6,7 +6,11 @@ var Post = require('./postModel.js')
 var commentSchema = new Schema({
     user: {type: Schema.Types.ObjectId, ref: 'User'},
     post_id: {type: Schema.Types.ObjectId, ref: 'Post'},
-    parent_id: {type: Schema.Types.ObjectId, ref: 'Comment'},
+    replies: [
+        { posted: { type: Date, default: Date.now },
+          author: {type: Schema.Types.ObjectId, ref: 'User'},
+          text: String
+        }],
     body: String,
 	  created_at: { type: Date, default: Date.now },
   	updated_at: Date

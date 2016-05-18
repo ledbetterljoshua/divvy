@@ -24,6 +24,7 @@ var express = require('express'),
 
 	//require('./controllers/api/posts')(app, router, bodyParser);
 	require('./controllers/api/comments')(app, router, bodyParser);
+	require('./controllers/api/search')(app, router, bodyParser);
 	require('./controllers/api/posts')(app, router, bodyParser);
 	require('./controllers/api/groups')(app, router, bodyParser);
 	require('./controllers/api/users')(app, passport, flash);
@@ -37,7 +38,7 @@ var express = require('express'),
 	app.use(bodyParser.json());
 
 
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 8000;
 
 app.use('/assets', express.static(__dirname + '/views'));
 
