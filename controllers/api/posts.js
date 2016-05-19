@@ -12,8 +12,8 @@ module.exports = function(app, router, bodyParser) {
     //get trending posts
     router.get('/posts/trending', function(req, res) {
         Posts.find( { 
-          private: false })
-          .limit(20)
+          private: false, popularity: { $lte: req.query.lessThan } })
+          .limit(req.query.limit)
           .sort('-popularity')
           .exec(function (err, posts) {
             // do something with the array of posts
@@ -30,9 +30,10 @@ module.exports = function(app, router, bodyParser) {
     router.get('/user/:uname/posts', function(req, res) {
 
         Posts.find({
-                username: req.params.uname
-            },
-            function(err, posts) {
+            user: req.params.uname, created_at: { $gt: req.query.createdAtBefore }
+          })
+          .limit(req.query.limit)
+          .exec(function(err, posts) {
                 if (err) {
                     res.send(err)
                 };
@@ -46,8 +47,10 @@ module.exports = function(app, router, bodyParser) {
     router.get('/groups/:group/posts', function(req, res) {
 
         Posts.find({
-            group: req.params.group
-        }, function(err, posts) {
+            group: req.params.group, created_at: { $gt: req.query.createdAtBefore }
+        })
+          .limit(req.query.limit)
+          .exec(function(err, posts) {
             if (err) {
                 res.send(err)
             };
@@ -57,12 +60,12 @@ module.exports = function(app, router, bodyParser) {
 
     });
 
-    //get a single post
+    //get all posts for a user
     router.get('/posts', isAuthenticated, function(req, res) {
 
         Posts.find({
             user: req.user
-        }, function(err, post) {
+        }).exec(function(err, post) {
             if (err) {
                 res.send(err)
             };
@@ -83,9 +86,11 @@ module.exports = function(app, router, bodyParser) {
             };
             Response.post = post;
             Comments.find({
-                    post_id: req.params.id
-                },
-                function(err, comments) {
+                post_id: req.params.id, 
+                created_at: { $gt: req.query.createdAtBefore }
+            })
+            .limit(req.query.limit)
+            .exec(function(err, comments) {
                     if (err) {
                         res.send(err)
                     };

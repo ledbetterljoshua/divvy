@@ -9,8 +9,8 @@ module.exports = function(app, router, bodyParser) {
     //get trending groups
     router.get('/groups/trending', function(req, res){
       Groups.find( { 
-      private: false })
-      .limit(20)
+      private: false, popularity: { $lt: req.query.lessThan } })
+      .limit(req.query.limit)
       .sort('-popularity')
       .exec(function (err, groups) {
         // do something with the array of posts
@@ -22,8 +22,8 @@ module.exports = function(app, router, bodyParser) {
     router.get('/user/:uname/groups', function(req, res) {
         
         Groups.find({ user: req.params.uname, 
-        private: false })
-        .limit( 20 )
+        private: false, created_at: { $gt: req.query.createdAtBefore } })
+        .limit(req.query.limit)
         .sort( '-created_at' )
         .exec(function(err, groups) {
             if (err) {res.send(err)};
@@ -35,7 +35,9 @@ module.exports = function(app, router, bodyParser) {
     
     //get all of the current users groups he is apart of
     router.get('/groups/added-to', isAuthenticated, function(req, res) {
-       Groups.find({ users: req.user._id }, function(err, groups) {
+       Groups.find({ users: req.user._id, created_at: { $gt: req.query.createdAtBefore } })
+          .limit(req.query.limit)
+          .exec(function(err, groups) {
           if(err) res.send(err); 
           console.log(req.user)
           res.send(groups); 
@@ -43,7 +45,9 @@ module.exports = function(app, router, bodyParser) {
     });
     //get all of the current users personally created groups
     router.get('/groups/created', isAuthenticated, function(req, res) {
-       Groups.find({ user: req.user._id }, function(err, groups) {
+       Groups.find({ user: req.user._id, created_at: { $gt: req.query.createdAtBefore } })
+          .limit(req.query.limit)
+          .exec(function(err, groups) {
           if(err) res.send(err); 
           console.log(req.user)
           res.send(groups); 
@@ -52,10 +56,14 @@ module.exports = function(app, router, bodyParser) {
     //get all of the current users groups, created and added
     router.get('/groups', isAuthenticated, function(req, res) {
       var response = {}
-       Groups.find({ user: req.user._id }, function(err, groups) {
+       Groups.find({ user: req.user._id, created_at: { $gt: req.query.createdAtBefore } })
+          .limit(req.query.limit)
+          .exec(function(err, groups) {
           if(err) res.send(err); 
           response.created = groups;
-          Groups.find({ users: req.user._id }, function(err, groupss) {
+          Groups.find({ users: req.user._id, created_at: { $gt: req.query.createdAtBefore } })
+            .limit(req.query.limit)
+            .exec(function(err, groupss) {
               if(err) res.send(err); 
               response.addedTo = groupss;
               res.send(response); 

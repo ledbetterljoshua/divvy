@@ -17,6 +17,8 @@ module.exports = function(app, router, bodyParser) {
 		        private: false, user: {$ne: req.user._id } }, 
 		        { score : { $meta: "textScore" } }
 		    )
+		    .limit(req.query.limit)
+          	.skip(req.query.skip)
 		    .sort({ score : { $meta : 'textScore' } })
 		    .exec(function(err, otherGroupResults) {
 
@@ -29,6 +31,8 @@ module.exports = function(app, router, bodyParser) {
 			        private: false, user: {$ne: req.user._id } }, 
 			        { score : { $meta: "textScore" } }
 			    )
+			    .limit(req.query.limit)
+      			.skip(req.query.skip)
 			    .sort({ score : { $meta : 'textScore' } })
 			    .exec(function(err, otherPostResults) {
 			    	results.otherPosts = otherPostResults;
@@ -36,6 +40,8 @@ module.exports = function(app, router, bodyParser) {
 				        { $text : { $search : req.query.all } }, 
 				        { score : { $meta: "textScore" } }
 				    )
+				    .limit(req.query.limit)
+          			.skip(req.query.skip)
 				    .sort({ score : { $meta : 'textScore' } })
 				    .exec(function(err, userResults) {
 				    	results.users = userResults;
@@ -44,6 +50,8 @@ module.exports = function(app, router, bodyParser) {
 					        user: req.user._id }, 
 					        { score : { $meta: "textScore" } }
 					    )
+					    .limit(req.query.limit)
+          				.skip(req.query.skip)
 					    .sort({ score : { $meta : 'textScore' } })
 					    .exec(function(err, myGroupResults) {
 					    	results.myGroups = myGroupResults;
@@ -52,6 +60,7 @@ module.exports = function(app, router, bodyParser) {
 						        user: req.user._id }, 
 						        { score : { $meta: "textScore" } }
 						    )
+						    .limit(req.query.limit).skip(req.query.skip)
 						    .sort({ score : { $meta : 'textScore' } })
 						    .exec(function(err, myPostResults) {
 						    	results.myPosts = myPostResults;
@@ -68,6 +77,7 @@ module.exports = function(app, router, bodyParser) {
 		        private: false }, 
 		        { score : { $meta: "textScore" } }
 		    )
+		    .limit(req.query.limit).skip(req.query.skip)
 		    .sort({ score : { $meta : 'textScore' } })
 		    .exec(function(err, groupResults) {
 		    	var results = {};
@@ -78,6 +88,7 @@ module.exports = function(app, router, bodyParser) {
 			        { score : { $meta: "textScore" } }
 			    )
 			    .sort({ score : { $meta : 'textScore' } })
+			    .limit(req.query.limit).skip(req.query.skip)
 			    .exec(function(err, postResults) {
 			    	results.posts = postResults;
 			        Users.find(
@@ -85,6 +96,7 @@ module.exports = function(app, router, bodyParser) {
 				        private: false }, 
 				        { score : { $meta: "textScore" } }
 				    )
+				    .limit(req.query.limit).skip(req.query.skip)
 				    .sort({ score : { $meta : 'textScore' } })
 				    .exec(function(err, userResults) {
 				    	results.users = userResults;
