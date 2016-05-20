@@ -35,6 +35,8 @@ created_at: "2016-05-17T21:41:03.182Z"
 TODO: get more info from webcrawl. 
 TODO: if url is in the database for more than two days, crawl webpage again and update data
 
+idea: when crawling a page, do what good does. Collect all the links, and check if they link to other websites or pages. All the other webpages gathered should be crawled, and then added to the url model in the database as "related pages". So, in the app, you could be watching a youtube video, and then you would get a list of all the related videos. These pages would need to be ranked. 
+
 ###### Search API
 ___
 
