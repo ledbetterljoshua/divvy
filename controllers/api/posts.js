@@ -12,19 +12,15 @@ module.exports = function(app, router, bodyParser) {
     //get trending posts
     router.get('/posts/trending', function(req, res) {
         Posts.find( { 
-          private: false, popularity: { $lte: req.query.lessThan } })
+          private: false })
           .limit(req.query.limit)
+          .skip(req.query.skip)
           .sort('-popularity')
           .exec(function (err, posts) {
             // do something with the array of posts
             res.send(posts);
           });
     });
-
-    //**********TODO**********
-    //allow user to save a post by favoriting 
-
-    //allow user to save a post by clicking readlater
 
     //get all posts by a user
     router.get('/user/:uname/posts', function(req, res) {
@@ -86,19 +82,43 @@ module.exports = function(app, router, bodyParser) {
             };
             Response.post = post;
             Comments.find({
-                post_id: req.params.id, 
-                created_at: { $gt: req.query.createdAtBefore }
+                post_id: req.params.id
             })
-            .limit(req.query.limit)
+            .limit(req.query.commentLimit)
             .exec(function(err, comments) {
-                    if (err) {
-                        res.send(err)
-                    };
-                    Response.comments = comments;
-                    res.send(Response);
-                });
+                if (err) {
+                    res.send(err)
+                };
+                Response.comments = comments;
+                res.send(Response);
+            });
         });
 
+    });
+
+    //allow user to save a post by favoriting 
+    router.post('/post/:id/favorite', isAuthenticated, function(req, res) {
+      var newPost = Posts({
+          user: req.user,
+          username: req.body.username,
+          body: req.body.body,
+          url: req.body.url,
+          slug: req.body.slug,
+          siteDesc: req.body.siteDesc,
+          siteTitle: req.body.siteTitle,
+          image: req.body.image,
+          group: req.body.group,
+          private: true,
+          favorite: true,
+          created_at: req.body.created_at,
+          updated_at: req.body.updated_at
+      });
+      newPost.save(function(err) {
+          if (err) {
+              res.send(err)
+          };
+          res.send(newPost);
+      });
     });
 
     router.post('/posts', isAuthenticated, function(req, res) {
@@ -108,58 +128,52 @@ module.exports = function(app, router, bodyParser) {
         }, function(err, groups) {
             var response = {};
             response.group = groups;
-            console.log("req");
-            console.log(req.body);
             var ex = function(priv) {
                 if (req.body.id) {
-                    Posts.findByIdAndUpdate(req.body.id, {
-                            user: req.user,
-                            body: req.body.body,
-                            url: req.body.url,
-                            slug: req.body.slug,
-                            siteDesc: req.body.siteDesc,
-                            siteTitle: req.body.siteTitle,
-                            image: req.body.image,
-                            group: req.body.group,
-                            private: priv,
-                            created_at: req.body.created_at,
-                            updated_at: req.body.updated_at
-                        },
-                        function(err, post) {
-                            if (err) {
-                                res.send(err)
-                            };
-                            res.send('Success');
-                        });
+                  Posts.findByIdAndUpdate(req.body.id, {
+                    user: req.user,
+                    username: req.body.username,
+                    body: req.body.body,
+                    url: req.body.url,
+                    slug: req.body.slug,
+                    siteDesc: req.body.siteDesc,
+                    siteTitle: req.body.siteTitle,
+                    image: req.body.image,
+                    group: req.body.group,
+                    private: priv,
+                    created_at: req.body.created_at,
+                    updated_at: req.body.updated_at
+                  },
+                  function(err, post) {
+                    if (err) {
+                        res.send(err)
+                    };
+                    res.send('Success');
+                  });
                 } else {
-                    var newPost = Posts({
-                        user: req.user,
-                        body: req.body.body,
-                        url: req.body.url,
-                        slug: req.body.slug,
-                        siteDesc: req.body.siteDesc,
-                        siteTitle: req.body.siteTitle,
-                        image: req.body.image,
-                        group: req.body.group,
-                        private: priv,
-                        created_at: req.body.created_at,
-                        updated_at: req.body.updated_at
-                    });
-                    newPost.save(function(err) {
-                        if (err) {
-                            res.send(err)
-                        };
-                        res.send(newPost);
-                    });
+                  var newPost = Posts({
+                    user: req.user,
+                    username: req.body.username,
+                    body: req.body.body,
+                    url: req.body.url,
+                    slug: req.body.slug,
+                    siteDesc: req.body.siteDesc,
+                    siteTitle: req.body.siteTitle,
+                    image: req.body.image,
+                    group: req.body.group,
+                    private: priv,
+                    created_at: req.body.created_at,
+                    updated_at: req.body.updated_at
+                  });
+                  newPost.save(function(err) {
+                    if (err) {
+                        res.send(err)
+                    };
+                    res.send(newPost);
+                  });
 
                 }
             }
-            console.log("response.group");
-            console.log(response.group);
-            console.log("groups");
-            console.log(groups);
-            console.log( "req.body.group")
-            console.log( req.body.group)
             if (response.group.private) {
                 ex(true);
             } else {
@@ -190,5 +204,5 @@ function isAuthenticated(req, res, next) {
         return next();
 
     // if they aren't redirect them to the home page
-    res.redirect('/');
+    res.send({"error":"please not log in"});
 }

@@ -4,6 +4,7 @@ var Schema = mongoose.Schema;
 
 var postSchema = new Schema({
     user: {type: Schema.Types.ObjectId, ref: 'User'},
+    username: String,
     body: String,
     url: String,
     slug: String,
@@ -15,11 +16,14 @@ var postSchema = new Schema({
     comments: {type : Number , "default" : 0},
     group: {type: Schema.Types.ObjectId, ref: 'Group'},
     private: Boolean,
+    favorite: Boolean,
 	created_at: { type: Date, default: Date.now },
   	updated_at: Date
 });
 
 postSchema.index({ siteTitle: 'text', siteDesc: 'text', url: 'text', body: 'text' });
+
+
 
 var Posts = mongoose.model('Posts', postSchema);
 

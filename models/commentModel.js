@@ -5,15 +5,17 @@ var Post = require('./postModel.js')
 
 var commentSchema = new Schema({
     user: {type: Schema.Types.ObjectId, ref: 'User'},
+    username: String,
     post_id: {type: Schema.Types.ObjectId, ref: 'Post'},
-    replies: [
-        { posted: { type: Date, default: Date.now },
-          author: {type: Schema.Types.ObjectId, ref: 'User'},
-          text: String
-        }],
     body: String,
 	  created_at: { type: Date, default: Date.now },
-  	updated_at: Date
+  	updated_at: Date, 
+    replies: [
+    { posted: { type: Date, default: Date.now },
+      author: {type: Schema.Types.ObjectId, ref: 'User'},
+      username: String,
+      text: String
+    }]
 });
 
 commentSchema.pre('save', function(next) {
