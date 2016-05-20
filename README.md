@@ -17,7 +17,7 @@ This GET request will check if the URL passed to "u" query is in the database. I
 ```JSON
 /api/url/?u=:url
 ```
-Example:
+Example url and returned data:
 ```JSON
 /api/url?u=https://www.youtube.com/watch?v=ru0K8uYEZWw
 
@@ -32,32 +32,73 @@ _id: "573b8fef5097313817ae1e0a",
 created_at: "2016-05-17T21:41:03.182Z"
 }
 ```
-TODO: get more info from webcrawl. IE: the type of webpage, and assign the page to a specific category
+TODO: get more info from webcrawl. 
+TODO: if url is in the database for more than two days, crawl webpage again and update data
+
+###### Search API
+___
+
+```JSON
+/api/search/?all=searchTerm&limit=20&skip=20
+```
+
+This will return all results that match the searchTerm. You will get back the following objects: 
+users, otherGroups, otherPosts, myGroups, myPosts. otherGroups and otherPosts will hold other peoples posts and groups, and they will all be public. myGroups and myPosts returns all of the current users posts and groups, and they will be private and public. 
+
 
 ###### Posts API
 ___
-This GET request will return 20 of the moat popular posts:
+
+This GET request will return the most popular posts:
 ```JSON
 /api/posts/trending
 ```
-This is not user specific. Each post has an attribute called popularity, which is a number. The number grows each time the post if viewed, and each time time someone comments on that post.  
-
+This is not user specific. Each post has an attribute called popularity, which is a number. The number grows each time the post is viewed, and each time someone comments on that post.  
+`Pagination`
+Use the limit query to limit how many results you get back, and the skip query to skip over results. 
+```JSON
+/api/posts/trending?limit=20&skip=20
+```
 ___
 This GET request will return return all posts within a specific group:
 ```JSON
 /api/groups/:group/posts
 ```
+`Pagination`
+User the limit query to limit how many results you get back. Use the createdAtBefore query. 
+```JSON
+/api/groups/:group/posts?limit=20&createdAtBefore=2016-05-20T00:03:20.862Z
+```
+The reason to use createdAtBefore is stated here: http://stackoverflow.com/questions/5539955/how-to-paginate-with-mongoose-in-node-js
+
+Initial Use: 
+```javascript
+/api/groups/:group/posts?limit=20&createdAtBefore=new Date()
+```
+To get the second page: 
+```javascript
+/api/groups/:group/posts?limit=20&createdAtBefore=results[results.length-1].created_at
+```
 ___
-This GET request will return return all posts for the currently logged in user. If you are not logged in when making hitting this end point you will get an error:
+This GET request will return all posts for the currently logged in user. If you are not logged in when making hitting this end point you will get an error. Pagination is the same as /api/groups/:group/posts
 ```JSON
 /api/posts
 ```
 ___
-This GET request will return return information on a specific post, along with sending back the most 20 recent comments for the post.
+This GET request will return posts for the user whose id is passed to the url. Pagination is the same as /api/groups/:group/posts
+```JSON
+/user/:uname/posts
+```
+___
+This GET request will return information on a specific post, along with sending back the most 20 recent comments for the post. 
 ```JSON
 /api/post/:id
 ```
-
+___
+This POST request will save a post for a specific user. Favorited posts will be private by default. 
+```JSON
+/post/:id/favorite
+```
 ___
 This POST request will either update a current post, or create a new one, depending on whether or not you send an ID in the request body. If it creates a new post, the /api/url endpoint will be hit automatically, and add the data to the post.
 ```JSON
@@ -68,10 +109,17 @@ This DELETE request will delete a single post. Simply pass the ID of the post yo
 ```JSON
 /api/post/:id
 ```
-
-**TODO**
-allow user to save a post by favoriting 
-
-allow user to save a post by clicking readlater
 ___
 ###### Groups API
+___
+This GET request will return the moat popular groups:
+```JSON
+/api/groups/trending
+```
+This is not user specific. Each group has an attribute called popularity, which is a number. The number grows each time the group is viewed, and each time time someone adds a new post to the group.  
+`Pagination`
+Use the limit query to limit how many results you get back, and the skip query to skip over results. 
+```JSON
+/api/posts/trending?limit=20&skip=20
+```
+___
